@@ -1,5 +1,5 @@
-from .. import Wave
-from .. import ABCMeta, abstractmethod
+from ..wave import Wave
+from abc import ABCMeta, abstractmethod
 class Player(metaclass=ABCMeta):
     """
     再生可能な、時間変化する音声。
@@ -10,6 +10,15 @@ class Player(metaclass=ABCMeta):
         この音声の元となる音波。これに各Player固有の加工を施した音声が再生される。
     """
     def __init__(self, wave):
+        """
+        コンストラクタ。与えられた音波をもとに新しい音声を作る。
+        
+        Parameters
+        -----
+        wave: Wave
+            この音声のもとになる音波。
+        
+        """
         if not isinstance(wave, Wave):
             raise ValueError()
         self.wave = wave
