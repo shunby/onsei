@@ -25,7 +25,7 @@ wav_o = Wave(freq, interpolate(
 ).tolist())
 wav_a = Wave(freq, interpolate(
         db_to_multiples(
-                [14.3] + [17.0] + [None]*3 + [-6.4] + [None] + [-11.9]
+                [14.3] + [None]*2 +  [17.0] + [None]*2 + [-6.4] + [None] + [-11.9]
         )
 ).tolist())
 p = SimplePlayer(wav_u, 1000)
@@ -33,6 +33,6 @@ p.play()
 p = SimplePlayer(wav_e, 1000)
 p.play()
 p = SimplePlayer(wav_o, 1000)
-p.play()
+# p.play()
 p = SimplePlayer(wav_a, 1000)
 p.play()
