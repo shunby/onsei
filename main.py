@@ -1,38 +1,40 @@
 from onsei.player.simple_player import SimplePlayer
 from onsei.player.player import Player
 from onsei.wave import Wave
-from onsei.wave import db_to_multiples, interpolate
+from onsei.wave_util import db_to_ratio, db_to_multiples, interpolate, genwave_from_multiples, interpolate2
 import pyaudio
 import numpy as np
 import matplotlib.pyplot as plt
 
 freq = 400
 
-wav_u = Wave(freq, interpolate(
+wav_u = genwave_from_multiples(freq, interpolate(
         db_to_multiples(
-        [18]+[None]*4+[1.4]+[None]*4+[-4.6]+[None]*6+[-6.3]),
-        width=1.2
+        [18]+[None]*4+[1.4]+[None]*4+[-4.6]+[None]*6+[-6.3])
         ).tolist())
-wav_e = Wave(freq, interpolate(
+wav_e = genwave_from_multiples(freq, interpolate(
         db_to_multiples(
                 [20] + [None] * 6 + [10.6] + [None] * 3 + [12.5] + [None] * 7 + [6]
         )
 ).tolist())
-wav_o = Wave(freq, interpolate(
+wav_o = genwave_from_multiples(freq, interpolate(
         db_to_multiples(
                 [23.4] + [20.3] + [None] * 4 + [-13.6] + [None] * 3 + [-2]
         )
 ).tolist())
-wav_a = Wave(freq, interpolate(
+wav_a = genwave_from_multiples(freq, interpolate(
         db_to_multiples(
-                [14.3] + [None]*2 +  [17.0] + [None]*2 + [-6.4] + [None] + [-11.9]
+                [None]*2 + [40.6] + [None]*6 +  [30.0] + [None] * 1 +  [29.6] + [None]*2 + [24.6] + [None] * 2 + [6.9]
         )
 ).tolist())
-p = SimplePlayer(wav_u, 1000)
-p.play()
-p = SimplePlayer(wav_e, 1000)
-p.play()
-p = SimplePlayer(wav_o, 1000)
-# p.play()
-p = SimplePlayer(wav_a, 1000)
+wav_i = genwave_from_multiples(freq, interpolate(
+        db_to_multiples(
+                [None] * 0 + [31.8] + [None] * 8 + [21.8] + [None]*1 + [27.9] + [None]*2 + [24.6] + [None] * 1 + [14.6]
+        )
+).tolist())
+wav_k = Wave({freq: 0.03 for freq in np.arange(1000)})
+wav_none = Wave({0: 0})
+
+
+p = SimplePlayer([wav_k, wav_a], [1000, 1000])
 p.play()

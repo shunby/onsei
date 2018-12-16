@@ -9,19 +9,19 @@ class Player(metaclass=ABCMeta):
     wave: Wave
         この音声の元となる音波。これに各Player固有の加工を施した音声が再生される。
     """
-    def __init__(self, wave):
+    def __init__(self, waves):
         """
         コンストラクタ。与えられた音波をもとに新しい音声を作る。
         
         Parameters
         -----
-        wave: Wave
+        waves: list[Wave]
             この音声のもとになる音波。
         
         """
-        if not isinstance(wave, Wave):
-            raise ValueError()
-        self.wave = wave
+        if not isinstance(waves, list):
+            raise TypeError()
+        self.waves = waves
     
     @abstractmethod
     def play(self):
