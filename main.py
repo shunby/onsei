@@ -32,9 +32,9 @@ wav_i = genwave_from_multiples(freq, interpolate(
                 [None] * 0 + [31.8] + [None] * 8 + [21.8] + [None]*1 + [27.9] + [None]*2 + [24.6] + [None] * 1 + [14.6]
         )
 ).tolist())
-wav_k = Wave({freq: 0.03 for freq in np.arange(1000)})
+wav_k = Wave({freq: 0.00001 for freq in np.linspace(0, 44099, 50000)})
 wav_none = Wave({0: 0})
 
 
-p = SimplePlayer([wav_k, wav_a], [1000, 1000])
+p = SimplePlayer([wav_k, wav_a], [10, 107])
 p.play()

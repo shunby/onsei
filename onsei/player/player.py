@@ -1,6 +1,7 @@
 from ..wave import Wave
+from .playable import Playable
 from abc import ABCMeta, abstractmethod
-class Player(metaclass=ABCMeta):
+class Player(Playable, metaclass=ABCMeta):
     """
     再生可能な、時間変化する音声。
     

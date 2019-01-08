@@ -3,6 +3,7 @@ import pyaudio
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+import numpy.matlib
 
 SAMPLING_RATE  = 44100
 
@@ -38,14 +39,24 @@ class SimplePlayer(Player):
 
 
     def _genwave(self, stream, wave, duration):
-        #sin(2 * pi * f * t)
-        # 時間軸
-        t   = np.linspace(0, duration / 1000, duration / 1000 * SAMPLING_RATE)
-        # 周波数データの内容から波形生成
-        wav = np.sum([2 ** 10 * wave.freqs[freq] * np.sin(2 * np.pi * freq * t) for freq in wave.freqs.keys()], axis=0)
+        """
+        [private]
+        与えられた周波数データから、1秒分の音声を作る。
+        """
+        # 周波数領域(1~44100Hz)の作成。詳細はfft.pngに。
+        freqs = np.zeros(SAMPLING_RATE)
+        for freq, amp in wave.freqs.items():
+            freqs[int(freq)] = amp
+            pass
+        # 周波数領域からifftにかけて1秒分のデータに
+        wav =  np.real(2 ** 25 * np.fft.ifft(freqs))
         # 下限が0の整数値にする
         wav = wav - np.min(wav)
         wav = np.ceil(wav)
+        # dutration分引き延ばす
+        wav = np.append(np.matlib.repmat(wav, 1, duration//1000), wav[:int((SAMPLING_RATE - 1) * (duration % 1000)/1000)])
+        print(int((SAMPLING_RATE - 1) * (duration % 1000)/1000))
+        print(wave.freqs)
         # バイナリ列に変換
         binary = b""
         for i in wav:
